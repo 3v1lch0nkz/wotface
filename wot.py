@@ -12,25 +12,25 @@ def get_desktop_path():
     else:  # Linux or other UNIX-like systems
         return str(Path.home() / "Desktop")
 
-# Step 1: Load the custom Haar Cascade
+# Load the custom Haar Cascade
 # Replace 'path_to_your_custom_cascade.xml' with the path to your cascade file
 if getattr(sys, 'frozen', False):  # For PyInstaller executable
     base_path = sys._MEIPASS
 else:
     base_path = os.path.dirname(__file__)
 
-# Path to the Haar Cascade (make sure to adjust this to your actual XML file path)
+# READ HERE Multiple Path to the Haar Cascade goes Here (make sure to adjust this to your actual XML file path)
 #cascade_path = os.path.join(base_path, 'res', 'haarcascade_frontalface_default.xml')  # Update for your custom cascade
 #animal_cascade = cv.CascadeClassifier(cascade_path)
 
-# default testing path goes here, format your directories in Winblows10
+# READ HERE default testing path goes in, format your directories in Winblows10
 animal_cascade = cv.CascadeClassifier(r"")
 
 if animal_cascade.empty():
     print("Error: Could not load Haar Cascade.")
     sys.exit(1)
 
-# Step 2: Capture video from the webcam
+# Capture video from the cam device
 cap = cv.VideoCapture(0)  # 0 for the default camera
 
 if not cap.isOpened():
@@ -38,7 +38,7 @@ if not cap.isOpened():
     sys.exit(1)
 
 while True:
-    # Step 3: Capture frame-by-frame
+    # read frame-by-frame
     ret, frame = cap.read()
     if not ret:
         print("Error: Could not read frame.")
@@ -52,8 +52,8 @@ while True:
 
     # Step 6: Draw rectangles around detected animals
     for (x, y, w, h) in animals:
-        cv.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
-
+        cv.rectangle(frame, (x, y), (x + w, y + h), (255, 255, 255), 2)
+        cv.putText(frame, 'Face', (x, y - 10), cv.FONT_HERSHEY_PLAIN, 0.9, (255, 255, 255), 2)
     # Step 7: Display the resulting frame
     cv.imshow('Live Animal Detection | Press Q to quit, C to capture', frame)
 
@@ -71,6 +71,6 @@ while True:
     if key == ord('q'):
         break
 
-# Step 9: Release the capture and close windows
+# clean exit release the capture and close windows
 cap.release()
 cv.destroyAllWindows()
